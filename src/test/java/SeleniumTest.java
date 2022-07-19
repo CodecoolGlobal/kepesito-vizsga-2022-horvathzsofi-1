@@ -1,4 +1,5 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Allure;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +8,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 
 public class SeleniumTest {
@@ -22,7 +28,7 @@ public class SeleniumTest {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-extensions");
-        //options.addArguments("--headless");
+        options.addArguments("--headless");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("start-maximized");
 
@@ -31,13 +37,11 @@ public class SeleniumTest {
         webDriver.manage().window().maximize();
     }
 
-    /*
+
     @AfterEach
     public void tearDown(){
         webDriver.quit();
     }
-
-     */
 
 
     /*
@@ -127,9 +131,7 @@ public class SeleniumTest {
             namecard.closePopup();
         }catch (Exception e){}
         String[] actual = namecard.getNamesOnCard();
-        for (int i = 0; i < actual.length; i++) {
-            System.out.println(actual[i]);
-        }
+
         Assertions.assertArrayEquals(expected, actual);
     }
 
@@ -139,7 +141,68 @@ public class SeleniumTest {
      */
     @Test
     public void TableTest() {
+        Table table = new Table(webDriver);
+        FileHandler fileHandler = new FileHandler();
+        String directoryPath = "src/test/saved-data";
+        String filePath = "src/test/saved-data/names.txt";
 
+        fileHandler.createOutputDirectory(directoryPath);
+        fileHandler.deleteFile(filePath);
+
+        table.navigateToPage();
+        try {
+            table.closePopup();
+        }catch (Exception e){}
+
+        String[] actual = table.getPeoplesName();
+
+        for (String people : actual) {
+            fileHandler.writeFile(people, filePath);
+        }
+
+        String result = fileHandler.readFile(filePath);
+        String[] readFromFile = result.split("\n");
+
+        Path content = Paths.get(filePath);
+        try (InputStream is = Files.newInputStream(content)) {
+            Allure.addAttachment("Names of people", is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String[] expected = {
+                "Tiger Nixon",
+                "Garrett Winters",
+                "Ashton Cox",
+                "Cedric Kelly",
+                "Airi Satou",
+                "Brielle Williamson",
+                "Herrod Chandler",
+                "Rhona Davidson",
+                "Colleen Hurst",
+                "Sonya Frost",
+                "Jena Gaines",
+                "Quinn Flynn",
+                "Charde Marshall",
+                "Haley Kennedy",
+                "Tatyana Fitzpatrick",
+                "Michael Silva",
+                "Paul Byrd",
+                "Gloria Little",
+                "Bradley Greer",
+                "Dai Rios",
+                "Jenette Caldwell",
+                "Yuri Berry",
+                "Caesar Vance",
+                "Doris Wilder",
+                "Angelica Ramos",
+                "Gavin Joyce",
+                "Jennifer Chang",
+                "Brenden Wagner",
+                "Fiona Green",
+                "Shou Itou",
+                "Michelle House"};
+        Assertions.assertArrayEquals(expected, readFromFile);
     }
 
 }
