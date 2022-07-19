@@ -77,7 +77,8 @@ public class SeleniumTest {
         dropdownList.navigateToPage();
         try {
             dropdownList.closePopup();
-        } catch (Exception e) {        }
+        } catch (Exception e) {
+        }
         dropdownList.openDropdownList();
         dropdownList.selectLastElement();
         String actual = dropdownList.getResultValue();
@@ -91,7 +92,18 @@ public class SeleniumTest {
      */
     @Test
     public void AlertTest() {
+        ModalAlert modalAlert = new ModalAlert(webDriver);
+        modalAlert.navigateToPage();
+        try {
+            modalAlert.closePopup();
+        } catch (Exception e) {
+        }
+        modalAlert.clickOnLaunchModal();
+        String actual = modalAlert.getModalText();
+        modalAlert.clickOnCloseButton();
 
+        String expected = "A felugróablak megjelent";
+        Assertions.assertNotEquals(expected, actual);
     }
 
     /*
