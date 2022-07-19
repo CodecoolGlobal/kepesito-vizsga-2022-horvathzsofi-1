@@ -113,7 +113,24 @@ public class SeleniumTest {
      */
     @Test
     public void NamecardTest() {
-
+        String [] expected = {
+                "Tyreese Burn",
+                "Brenda Tree",
+                "Glenn Pho shizzle",
+                "Brian Hoyies",
+                "Glenn Pho shizzle",
+                "Arman Cheyia"
+        };
+        Namecard namecard = new Namecard(webDriver);
+        namecard.navigateToPage();
+        try {
+            namecard.closePopup();
+        }catch (Exception e){}
+        String[] actual = namecard.getNamesOnCard();
+        for (int i = 0; i < actual.length; i++) {
+            System.out.println(actual[i]);
+        }
+        Assertions.assertArrayEquals(expected, actual);
     }
 
     /*
