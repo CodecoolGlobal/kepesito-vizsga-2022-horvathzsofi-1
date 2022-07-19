@@ -14,7 +14,7 @@ public class SeleniumTest {
 
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
@@ -22,7 +22,7 @@ public class SeleniumTest {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-extensions");
-        options.addArguments("--headless");
+        //options.addArguments("--headless");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("start-maximized");
 
@@ -31,10 +31,13 @@ public class SeleniumTest {
         webDriver.manage().window().maximize();
     }
 
+    /*
     @AfterEach
     public void tearDown(){
         webDriver.quit();
     }
+
+     */
 
 
     /*
@@ -43,8 +46,7 @@ public class SeleniumTest {
     Használj tetszőleges tesztadatot
      */
     @Test
-    public void TestInput()
-    {
+    public void TestInput() {
         InputFields inputField = new InputFields(webDriver);
         int a = 7;
         int b = 18;
@@ -53,7 +55,8 @@ public class SeleniumTest {
         inputField.navigateToPage();
         try {
             inputField.closePopup();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         inputField.fillInputFieldA(String.valueOf(a));
         inputField.fillInputFieldB(String.valueOf(b));
         inputField.clickOnGetTotalButton();
@@ -69,9 +72,17 @@ public class SeleniumTest {
     Tesztadatként használd az hét utolsó napját
      */
     @Test
-    public void SelectDayTest()
-    {
-
+    public void SelectDayTest() {
+        DropdownList dropdownList = new DropdownList(webDriver);
+        dropdownList.navigateToPage();
+        try {
+            dropdownList.closePopup();
+        } catch (Exception e) {        }
+        dropdownList.openDropdownList();
+        dropdownList.selectLastElement();
+        String actual = dropdownList.getResultValue();
+        String expected = "Day selected :- Saturday";
+        Assertions.assertEquals(expected, actual);
     }
 
     /*
@@ -79,8 +90,7 @@ public class SeleniumTest {
     Írj tesztesetet a mellékelt dokumentumban, majd a tesztlépések alapján írj automatizált tesztet. A tesztesetben ellenőrizd a modal alert ablak szöveges tartalmát összahasonlítva egy általad definiált elvárt eredménnyel. Nyisd meg a Single Modal ablakot, tárolt el az ablakon megjelenő szöveget egy változóba és zárd be az ablakot a bezárás gombbal
      */
     @Test
-    public void AlertTest()
-    {
+    public void AlertTest() {
 
     }
 
@@ -90,8 +100,7 @@ public class SeleniumTest {
     Használj relatív útvonalat a névjegykártya név elemeinek kiolvasásához.
      */
     @Test
-    public void NamecardTest()
-    {
+    public void NamecardTest() {
 
     }
 
@@ -100,8 +109,7 @@ public class SeleniumTest {
     Írj tesztesetet a mellékelt dokumentumban, majd a tesztlépések alapján írj automatizált tesztet. A tesztesetet ellenőrizze a táblázatból a neveket, amelyeket a táblázat első oszlop tartalmaz. Gyűjtsd össze a neveket és tárold le a names.txt fájlba majd a tesztesetben a fájl tartalmát hasonlítsd össze egy elvárt eredménnyel.
      */
     @Test
-    public void TableTest()
-    {
+    public void TableTest() {
 
     }
 
