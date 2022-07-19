@@ -1,5 +1,6 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +11,7 @@ import java.time.Duration;
 
 public class SeleniumTest {
     WebDriver webDriver = null;
+
 
     @BeforeEach
     public void setUp(){
@@ -43,7 +45,22 @@ public class SeleniumTest {
     @Test
     public void TestInput()
     {
+        InputFields inputField = new InputFields(webDriver);
+        int a = 7;
+        int b = 18;
+        String expected = "25";
 
+        inputField.navigateToPage();
+        try {
+            inputField.closePopup();
+        } catch (Exception e) {}
+        inputField.fillInputFieldA(String.valueOf(a));
+        inputField.fillInputFieldB(String.valueOf(b));
+        inputField.clickOnGetTotalButton();
+
+        String actual = inputField.getTotalResult();
+
+        Assertions.assertEquals(expected, actual);
     }
 
     /*
